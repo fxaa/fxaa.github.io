@@ -1,0 +1,139 @@
+<style type="text/css">
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: rebeccapurple;
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: rebeccapurple;
+  }
+
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+  }
+</style>
+
+<script type="text/javascript">
+  window.onload=function(){
+  
+  Vue.component('v-select', VueSelect.VueSelect)
+  
+  var chosenInputGame = {
+    id: 0,
+    label: 'None',
+    inputs: {}
+  }
+  
+  var chosenOutputGame = {
+    id: 0,
+    label: 'None',
+    inputs: {}
+  }
+  
+  var globalGames = [{
+      id: 0,
+      label: 'None',
+      inputs: []
+    },
+    {
+      id: 1,
+      label: 'Counter-Strike: Global Offensive',
+      inputs: [{
+          title: "Sensitivity",
+          value: 1.00,
+          defaultValue: 1.00
+        },
+        {
+          title: "Scoped Sensitivity",
+          value: 1.00,
+          defaultValue: 1.00
+        }
+      ]
+    },
+    {
+      id: 2,
+      label: 'Rainbow Six Siege',
+      inputs: [{
+          title: "Horizontal Mouse Sensitivity",
+          value: 50,
+          defaultValue: 50
+        },
+        {
+          title: "Vertical Mouse Sensitivity",
+          value: 50,
+          defaultValue: 50
+        },
+        {
+          title: "ADS",
+          value: 50,
+          defaultValue: 50
+        },
+        {
+          title: "Mouse Multiplier",
+          value: 0.02,
+          defaultValue: 0.02
+        }
+      ]
+    },
+    {
+      id: 3,
+      label: 'Overwatch',
+      inputs: [{
+          title: "Sensitivity",
+          value: 15.0,
+          defaultValue: 15.0
+        },
+        {
+          title: "Scoped Sensitivity",
+          value: 30,
+          defaultValue: 30
+        }
+      ]
+    }
+  ]
+  
+  new Vue({
+    el: '#app',
+    data: {
+      selectedInput: chosenInputGame,
+      selectedOutput: chosenOutputGame,
+      games: globalGames
+    }
+  })
+  
+  //game sens input components
+  Vue.component('sens-input', {
+    props: ['input'],
+    template: `<div id="sens-input">
+            <h3>{{ input.title }}</h3><input v-model="input.value">
+                  `
+  })
+  
+  
+  }
+</script>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-select"></script>
+
+
+<div id="app">
+  <h1>hi</h1>
+  <h2>Input Game: {{ selectedInput.label }}</h2>
+  <v-select v-model="selectedInput" :options="games"></v-select>
+  <sens-input v-for="input in selectedInput.inputs" v-bind:input="input" v-bind:value="input.value" v-on:input="input.value = $event">
+  </sens-input>
+
+  <br />
+
+  <h2>Output Game: {{ selectedOutput.label }}</h2>
+  <v-select v-model="selectedOutput" :options="games"></v-select>
+</div>
