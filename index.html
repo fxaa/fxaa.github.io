@@ -22,6 +22,7 @@
 </style>
 
 <script type="text/javascript">
+  window.onload=function(){
   Vue.component('v-select', VueSelect.VueSelect)
 
   var chosenInputGame = {
@@ -132,7 +133,9 @@
     template: `<div id="sens-input">
             <h3>{{ input.title }}</h3><input v-model="input.value">
               </div>`
-  })
+  })}
+
+
 </script>
 
 <script src="https://unpkg.com/vue"></script>
