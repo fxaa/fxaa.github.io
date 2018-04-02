@@ -33,7 +33,7 @@
           return 0
       },
       giveSens: function() {
-      return 0
+          return 0
       }
   }
 
@@ -45,7 +45,7 @@
           return 0
       },
       giveSens: function() {
-      return 0
+          return 0
       }
   }
 
@@ -57,7 +57,7 @@
               return 0
           },
           giveSens: function() {
-        return 0
+              return 0
           }
       },
       {
@@ -78,19 +78,14 @@
               return 360 / (this.inputs[0].value * mouseDPI * 0.022) * 2.54
           },
           giveSens: function(cm360, mouseDPI) {
-        return ((1/cm360)*2.54*360/mouseDPI/0.022)
+              return {label: "Sensitivity: ", value: ((1/cm360)*2.54*360/mouseDPI/0.022)}
           }
       },
       {
           id: 2,
           label: 'Rainbow Six Siege',
           inputs: [{
-                  title: "Horizontal Mouse Sensitivity",
-                  value: 50,
-                  defaultValue: 50
-              },
-              {
-                  title: "Vertical Mouse Sensitivity",
+                  title: "Mouse Sensitivity (Assuming Horizontal = Vertical)",
                   value: 50,
                   defaultValue: 50
               },
@@ -106,10 +101,10 @@
               }
           ],
           giveCm360: function(mouseDPI) {
-              return 360 / (this.inputs[0].value * mouseDPI * 0.022) * 2.54
+              return 360 / (((this.inputs[0].value) * 0.26043428569 * (this.inputs[2].value/0.02)) * mouseDPI * 0.022) * 2.54
           },
-          giveSens: function() {
-
+          giveSens: function(cm360, mouseDPI) {
+              return {label: "Mouse Multiplier (use this with 50 Horizontal/Vertical Sensitivity): ", value: (((1/cm360)*2.54*360/mouseDPI/0.022) / 0.26043428569 * (0.02/this.inputs[2].value))/50*0.02}
           }
       },
       {
@@ -130,7 +125,7 @@
               return 360 / (this.inputs[0].value * mouseDPI * 0.0066) * 2.54
           },
           giveSens: function(cm360, mouseDPI) {
-        return ((1/cm360)*2.54*360/mouseDPI/0.0066)
+              return {label: "Sensitivity: ", value: ((1/cm360)*2.54*360/mouseDPI/0.0066)}
           }
       }
   ]
@@ -142,6 +137,12 @@
           selectedOutput: chosenOutputGame,
           games: globalGames,
           userDPI: 800,
+          outputString: function() {
+          return this.selectedOutput.giveSens(
+                this.selectedInput.giveCm360(this.userDPI), this.userDPI).label
+                + Math.round(this.selectedOutput.giveSens(
+                this.selectedInput.giveCm360(this.userDPI), this.userDPI).value*1000000)/1000000
+          }
       }
   })
 
@@ -168,13 +169,13 @@
     <sens-input v-for="input in selectedInput.inputs" v-bind:input="input">
     </sens-input>
     <h3>Centimeters per 360° rotation</h3>
-    <span>{{ Math.round(selectedInput.giveCm360(userDPI)*100)/100 }}</span>
+    <span>{{ Math.round(selectedInput.giveCm360(userDPI)*1000000)/1000000 }}</span>
 
     <br />
 
     <h2>Output Game: {{ selectedOutput.label }}</h2>
     <v-select v-model="selectedOutput" :options="games"></v-select>
     <h3>Required Sensitivity</h3>
-    <span>{{ Math.round(selectedOutput.giveSens(selectedInput.giveCm360(userDPI), userDPI)*100)/100 }}</span>
+    <span>{{ outputString() }}</span>
 
 </div>
