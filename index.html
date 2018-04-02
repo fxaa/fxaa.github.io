@@ -26,111 +26,129 @@
   Vue.component('v-select', VueSelect.VueSelect)
 
   var chosenInputGame = {
-    id: 0,
-    label: 'None',
-    inputs: [],
-      cm360: function () {
-        return 0
+      id: 0,
+      label: 'None',
+      inputs: [],
+      giveCm360: function() {
+          return 0
+      },
+      giveSens: function() {
+      return 0
       }
   }
 
   var chosenOutputGame = {
-    id: 0,
-    label: 'None',
-    inputs: [],
-      cm360: function () {
-        return 0
+      id: 0,
+      label: 'None',
+      inputs: [],
+      giveCm360: function() {
+          return 0
+      },
+      giveSens: function() {
+      return 0
       }
   }
 
   var globalGames = [{
-      id: 0,
-      label: 'None',
-      inputs: [],
-      cm360: function () {
+          id: 0,
+          label: 'None',
+          inputs: [],
+          giveCm360: function() {
+              return 0
+          },
+          giveSens: function() {
         return 0
+          }
+      },
+      {
+          id: 1,
+          label: 'Counter-Strike: Global Offensive',
+          inputs: [{
+                  title: "Sensitivity",
+                  value: 1.00,
+                  defaultValue: 1.00
+              },
+              {
+                  title: "Scoped Sensitivity",
+                  value: 1.00,
+                  defaultValue: 1.00
+              }
+          ],
+          giveCm360: function(mouseDPI) {
+              return 360 / (this.inputs[0].value * mouseDPI * 0.022) * 2.54
+          },
+          giveSens: function(cm360, mouseDPI) {
+        return ((1/cm360)*2.54*360/mouseDPI/0.022)
+          }
+      },
+      {
+          id: 2,
+          label: 'Rainbow Six Siege',
+          inputs: [{
+                  title: "Horizontal Mouse Sensitivity",
+                  value: 50,
+                  defaultValue: 50
+              },
+              {
+                  title: "Vertical Mouse Sensitivity",
+                  value: 50,
+                  defaultValue: 50
+              },
+              {
+                  title: "ADS",
+                  value: 50,
+                  defaultValue: 50
+              },
+              {
+                  title: "Mouse Multiplier",
+                  value: 0.02,
+                  defaultValue: 0.02
+              }
+          ],
+          giveCm360: function(mouseDPI) {
+              return 360 / (this.inputs[0].value * mouseDPI * 0.022) * 2.54
+          },
+          giveSens: function() {
+
+          }
+      },
+      {
+          id: 3,
+          label: 'Overwatch',
+          inputs: [{
+                  title: "Sensitivity",
+                  value: 15.0,
+                  defaultValue: 15.0
+              },
+              {
+                  title: "Scoped Sensitivity",
+                  value: 30,
+                  defaultValue: 30
+              }
+          ],
+          giveCm360: function(mouseDPI) {
+              return 360 / (this.inputs[0].value * mouseDPI * 0.0066) * 2.54
+          },
+          giveSens: function(cm360, mouseDPI) {
+        return ((1/cm360)*2.54*360/mouseDPI/0.0066)
+          }
       }
-    },
-    {
-      id: 1,
-      label: 'Counter-Strike: Global Offensive',
-      inputs: [{
-          title: "Sensitivity",
-          value: 1.00,
-          defaultValue: 1.00
-        },
-        {
-          title: "Scoped Sensitivity",
-          value: 1.00,
-          defaultValue: 1.00
-        }
-      ],
-      cm360: function (mouseDPI) {
-        return Math.round(360/(this.inputs[0].value*mouseDPI*0.022)*2.54*100)/100
-      }
-    },
-    {
-      id: 2,
-      label: 'Rainbow Six Siege',
-      inputs: [{
-          title: "Horizontal Mouse Sensitivity",
-          value: 50,
-          defaultValue: 50
-        },
-        {
-          title: "Vertical Mouse Sensitivity",
-          value: 50,
-          defaultValue: 50
-        },
-        {
-          title: "ADS",
-          value: 50,
-          defaultValue: 50
-        },
-        {
-          title: "Mouse Multiplier",
-          value: 0.02,
-          defaultValue: 0.02
-        }
-      ],
-      cm360: function (mouseDPI) {
-        return 360/(this.inputs[0].value*mouseDPI*0.022)*2.54
-      }
-    },
-    {
-      id: 3,
-      label: 'Overwatch',
-      inputs: [{
-          title: "Sensitivity",
-          value: 15.0,
-          defaultValue: 15.0
-        },
-        {
-          title: "Scoped Sensitivity",
-          value: 30,
-          defaultValue: 30
-        }
-      ],
-      cm360: function (mouseDPI) {
-        return Math.round(360/(this.inputs[0].value*mouseDPI*0.0066)*2.54*100)/100
-      }
-    }
   ]
 
   new Vue({
-    el: '#app',
-    data: {
-      selectedInput: chosenInputGame,
-      selectedOutput: chosenOutputGame,
-      games: globalGames,
-      userDPI: 800
-    }
+      el: '#app',
+      data: {
+          selectedInput: chosenInputGame,
+          selectedOutput: chosenOutputGame,
+          games: globalGames,
+          userDPI: 800,
+      }
   })
 
   //game sens input components
   Vue.component('sens-input', {
-    props: ['input'],
-    template: `<div id="sens-input">
+      props: ['input'],
+      template: `<div id="sens-input">
             <h3>{{ input.title }}</h3><input v-model="input.value">
               </div>`
   })}
@@ -143,17 +161,20 @@
 
 
 <div id="app">
-  <h1>Sensitivity Converter</h1>
-  <h3>Mouse DPI:</h3> <input v-model="userDPI"> <br />
-  <h2>Input Game: {{ selectedInput.label }}</h2>
-  <v-select v-model="selectedInput" :options="games"></v-select>
-  <sens-input v-for="input in selectedInput.inputs" v-bind:input="input">
-  </sens-input>
-  <h2>Centimeters per 360° rotation</h2>
-  <span>{{ selectedInput.cm360(userDPI) }}</span>
+    <h1>Sensitivity Converter</h1>
+    <h3>Mouse DPI:</h3> <input v-model="userDPI"> <br />
+    <h2>Input Game: {{ selectedInput.label }}</h2>
+    <v-select v-model="selectedInput" :options="games"></v-select>
+    <sens-input v-for="input in selectedInput.inputs" v-bind:input="input">
+    </sens-input>
+    <h3>Centimeters per 360° rotation</h3>
+    <span>{{ Math.round(selectedInput.giveCm360(userDPI)*100)/100 }}</span>
 
-  <br />
+    <br />
 
-  <h2>Output Game: {{ selectedOutput.label }}</h2>
-  <v-select v-model="selectedOutput" :options="games"></v-select>
+    <h2>Output Game: {{ selectedOutput.label }}</h2>
+    <v-select v-model="selectedOutput" :options="games"></v-select>
+    <h3>Required Sensitivity</h3>
+    <span>{{ Math.round(selectedOutput.giveSens(selectedInput.giveCm360(userDPI), userDPI)*100)/100 }}</span>
+
 </div>
