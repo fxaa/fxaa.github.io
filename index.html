@@ -127,6 +127,27 @@
           giveSens: function(cm360, mouseDPI) {
               return {label: "Sensitivity: ", value: ((1/cm360)*2.54*360/mouseDPI/0.0066)}
           }
+      },
+      {
+          id: 4,
+          label: 'Apex Legends',
+          inputs: [{
+                  title: "Sensitivity",
+                  value: 1.0,
+                  defaultValue: 1.0
+              },
+              {
+                  title: "ADS Sensitivity",
+                  value: 1.0,
+                  defaultValue: 1.0
+              }
+          ],
+          giveCm360: function(mouseDPI) {
+              return 360 / (this.inputs[0].value * mouseDPI * 0.022) * 2.54
+          },
+          giveSens: function(cm360, mouseDPI) {
+              return {label: "Sensitivity: ", value: ((1/cm360)*2.54*360/mouseDPI/0.022)}
+          }
       }
   ]
 
