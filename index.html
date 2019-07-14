@@ -1,181 +1,195 @@
 <style type="text/css">
-  body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-  }
+    body {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
 
-  h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: rebeccapurple;
-  }
+    h1 {
+        font-size: 24px;
+        font-weight: 600;
+        color: rebeccapurple;
+    }
 
-  h2 {
-    font-size: 18px;
-    font-weight: 600;
-    color: rebeccapurple;
-  }
+    h2 {
+        font-size: 18px;
+        font-weight: 600;
+        color: rebeccapurple;
+    }
 
-  h3 {
-    font-size: 14px;
-    font-weight: 600;
-  }
+    h3 {
+        font-size: 14px;
+        font-weight: 600;
+    }
 </style>
 
 <script type="text/javascript">
-  window.onload=function(){
-  Vue.component('v-select', vSelect)
+    window.onload = function () {
+        Vue.component('v-select', VueSelect.VueSelect)
 
-  var chosenInputGame = {
-      id: 0,
-      label: 'None',
-      inputs: [],
-      giveCm360: function() {
-          return 0
-      },
-      giveSens: function() {
-          return 0
-      }
-  }
+        var chosenInputGame = {
+            id: 0,
+            label: 'None',
+            inputs: [],
+            giveCm360: function () {
+                return 0
+            },
+            giveSens: function () {
+                return 0
+            }
+        }
 
-  var chosenOutputGame = {
-      id: 0,
-      label: 'None',
-      inputs: [],
-      giveCm360: function() {
-          return 0
-      },
-      giveSens: function() {
-          return 0
-      }
-  }
+        var chosenOutputGame = {
+            id: 0,
+            label: 'None',
+            inputs: [],
+            giveCm360: function () {
+                return 0
+            },
+            giveSens: function () {
+                return 0
+            }
+        }
 
-  var globalGames = [{
-          id: 0,
-          label: 'None',
-          inputs: [],
-          giveCm360: function() {
-              return 0
-          },
-          giveSens: function() {
-              return 0
-          }
-      },
-      {
-          id: 1,
-          label: 'Counter-Strike: Global Offensive',
-          inputs: [{
-                  title: "Sensitivity",
-                  value: 1.00,
-                  defaultValue: 1.00
-              },
-              {
-                  title: "Scoped Sensitivity",
-                  value: 1.00,
-                  defaultValue: 1.00
-              }
-          ],
-          giveCm360: function(mouseDPI) {
-              return 360 / (this.inputs[0].value * mouseDPI * 0.022) * 2.54
-          },
-          giveSens: function(cm360, mouseDPI) {
-              return {label: "Sensitivity: ", value: ((1/cm360)*2.54*360/mouseDPI/0.022)}
-          }
-      },
-      {
-          id: 2,
-          label: 'Rainbow Six Siege',
-          inputs: [{
-                  title: "Mouse Sensitivity (Assuming Horizontal = Vertical)",
-                  value: 50,
-                  defaultValue: 50
-              },
-              {
-                  title: "ADS",
-                  value: 50,
-                  defaultValue: 50
-              },
-              {
-                  title: "Mouse Multiplier",
-                  value: 0.02,
-                  defaultValue: 0.02
-              }
-          ],
-          giveCm360: function(mouseDPI) {
-              return 360 / (((this.inputs[0].value) * 0.26043428569 * (this.inputs[2].value/0.02)) * mouseDPI * 0.022) * 2.54
-          },
-          giveSens: function(cm360, mouseDPI) {
-              return {label: "Mouse Multiplier (use this with 50 Horizontal/Vertical Sensitivity): ", value: (((1/cm360)*2.54*360/mouseDPI/0.022) / 0.26043428569 * (0.02/this.inputs[2].value))/50*0.02}
-          }
-      },
-      {
-          id: 3,
-          label: 'Overwatch',
-          inputs: [{
-                  title: "Sensitivity",
-                  value: 15.0,
-                  defaultValue: 15.0
-              },
-              {
-                  title: "Scoped Sensitivity",
-                  value: 30,
-                  defaultValue: 30
-              }
-          ],
-          giveCm360: function(mouseDPI) {
-              return 360 / (this.inputs[0].value * mouseDPI * 0.0066) * 2.54
-          },
-          giveSens: function(cm360, mouseDPI) {
-              return {label: "Sensitivity: ", value: ((1/cm360)*2.54*360/mouseDPI/0.0066)}
-          }
-      },
-      {
-          id: 4,
-          label: 'Apex Legends',
-          inputs: [{
-                  title: "Sensitivity",
-                  value: 1.0,
-                  defaultValue: 1.0
-              },
-              {
-                  title: "ADS Sensitivity",
-                  value: 1.0,
-                  defaultValue: 1.0
-              }
-          ],
-          giveCm360: function(mouseDPI) {
-              return 360 / (this.inputs[0].value * mouseDPI * 0.022) * 2.54
-          },
-          giveSens: function(cm360, mouseDPI) {
-              return {label: "Sensitivity: ", value: ((1/cm360)*2.54*360/mouseDPI/0.022)}
-          }
-      }
-  ]
+        var globalGames = [{
+                id: 0,
+                label: 'None',
+                inputs: [],
+                giveCm360: function () {
+                    return 0
+                },
+                giveSens: function () {
+                    return 0
+                }
+            },
+            {
+                id: 1,
+                label: 'Counter-Strike: Global Offensive',
+                inputs: [{
+                        title: "Sensitivity",
+                        value: 1.00,
+                        defaultValue: 1.00
+                    },
+                    {
+                        title: "Scoped Sensitivity",
+                        value: 1.00,
+                        defaultValue: 1.00
+                    }
+                ],
+                giveCm360: function (mouseDPI) {
+                    return 360 / (this.inputs[0].value * mouseDPI * 0.022) * 2.54
+                },
+                giveSens: function (cm360, mouseDPI) {
+                    return {
+                        label: "Sensitivity: ",
+                        value: ((1 / cm360) * 2.54 * 360 / mouseDPI / 0.022)
+                    }
+                }
+            },
+            {
+                id: 2,
+                label: 'Rainbow Six Siege',
+                inputs: [{
+                        title: "Mouse Sensitivity (Assuming Horizontal = Vertical)",
+                        value: 50,
+                        defaultValue: 50
+                    },
+                    {
+                        title: "ADS",
+                        value: 50,
+                        defaultValue: 50
+                    },
+                    {
+                        title: "Mouse Multiplier",
+                        value: 0.02,
+                        defaultValue: 0.02
+                    }
+                ],
+                giveCm360: function (mouseDPI) {
+                    return 360 / (((this.inputs[0].value) * 0.26043428569 * (this.inputs[2].value / 0.02)) *
+                        mouseDPI * 0.022) * 2.54
+                },
+                giveSens: function (cm360, mouseDPI) {
+                    return {
+                        label: "Mouse Multiplier (use this with 50 Horizontal/Vertical Sensitivity): ",
+                        value: (((1 / cm360) * 2.54 * 360 / mouseDPI / 0.022) / 0.26043428569 * (0.02 / this
+                            .inputs[2].value)) / 50 * 0.02
+                    }
+                }
+            },
+            {
+                id: 3,
+                label: 'Overwatch',
+                inputs: [{
+                        title: "Sensitivity",
+                        value: 15.0,
+                        defaultValue: 15.0
+                    },
+                    {
+                        title: "Scoped Sensitivity",
+                        value: 30,
+                        defaultValue: 30
+                    }
+                ],
+                giveCm360: function (mouseDPI) {
+                    return 360 / (this.inputs[0].value * mouseDPI * 0.0066) * 2.54
+                },
+                giveSens: function (cm360, mouseDPI) {
+                    return {
+                        label: "Sensitivity: ",
+                        value: ((1 / cm360) * 2.54 * 360 / mouseDPI / 0.0066)
+                    }
+                }
+            },
+            {
+                id: 4,
+                label: 'Apex Legends',
+                inputs: [{
+                        title: "Sensitivity",
+                        value: 1.0,
+                        defaultValue: 1.0
+                    },
+                    {
+                        title: "ADS Sensitivity",
+                        value: 1.0,
+                        defaultValue: 1.0
+                    }
+                ],
+                giveCm360: function (mouseDPI) {
+                    return 360 / (this.inputs[0].value * mouseDPI * 0.022) * 2.54
+                },
+                giveSens: function (cm360, mouseDPI) {
+                    return {
+                        label: "Sensitivity: ",
+                        value: ((1 / cm360) * 2.54 * 360 / mouseDPI / 0.022)
+                    }
+                }
+            }
+        ]
 
-  new Vue({
-      el: '#app',
-      data: {
-          selectedInput: chosenInputGame,
-          selectedOutput: chosenOutputGame,
-          games: globalGames,
-          userDPI: 800,
-          outputString: function() {
-          return this.selectedOutput.giveSens(
-                this.selectedInput.giveCm360(this.userDPI), this.userDPI).label
-                + Math.round(this.selectedOutput.giveSens(
-                this.selectedInput.giveCm360(this.userDPI), this.userDPI).value*1000000)/1000000
-          }
-      }
-  })
+        new Vue({
+            el: '#app',
+            data: {
+                selectedInput: chosenInputGame,
+                selectedOutput: chosenOutputGame,
+                games: globalGames,
+                userDPI: 800,
+                outputString: function () {
+                    return this.selectedOutput.giveSens(
+                            this.selectedInput.giveCm360(this.userDPI), this.userDPI).label +
+                        Math.round(this.selectedOutput.giveSens(
+                                this.selectedInput.giveCm360(this.userDPI), this.userDPI).value *
+                            1000000) / 1000000
+                }
+            }
+        })
 
-  //game sens input components
-  Vue.component('sens-input', {
-      props: ['input'],
-      template: `<div id="sens-input">
-            <h3>{{ input.title }}</h3><input v-model="input.value">
-              </div>`
-  })}
-
-
+        //game sens input components
+        Vue.component('sens-input', {
+            props: ['input'],
+            template: `<div id="sens-input">
+              <h3>{{ input.title }}</h3><input v-model="input.value">
+                </div>`
+        })
+    }
 </script>
 
 <script src="https://unpkg.com/vue@latest"></script>
